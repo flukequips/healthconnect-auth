@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Health Pal — Documentation</title>
+<meta name="description" content="My Health Pal connects to your health systems and shows your records together on your phone.">
+<style>
+  :root { --bg:#F4F6F5; --card:#FFFFFF; --text:#14201C; --muted:#5D6B66; --border:#DDE3E0; --accent:#0F766E; --soft:#D7EFEC; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#0E1412; --card:#18211E; --text:#E8EEEB; --muted:#98A6A0; --border:#2A3531; --accent:#3CC2B3; --soft:#163B37; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:16px/1.6 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 32px 16px 64px; }
+  header { margin-bottom: 24px; }
+  .mark { width:48px; height:48px; border-radius:14px; background:var(--soft); color:var(--accent); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:26px; margin-bottom:12px; }
+  h1 { font-size: 32px; line-height:1.2; margin:0 0 6px; }
+  .lede { color:var(--muted); margin:0; }
+  nav { display:flex; flex-wrap:wrap; gap:8px; margin:20px 0 8px; }
+  nav a { color:var(--accent); background:var(--card); border:1px solid var(--border); border-radius:999px; padding:6px 12px; font-size:14px; font-weight:600; text-decoration:none; }
+  section { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:20px; margin-top:16px; }
+  h2 { font-size:20px; margin:0 0 8px; scroll-margin-top:16px; }
+  h3 { font-size:16px; margin:16px 0 4px; }
+  p, li { margin: 6px 0; }
+  ul { padding-left: 20px; }
+  .note { background:var(--soft); border-radius:10px; padding:12px 14px; margin-top:12px; }
+  table { width:100%; border-collapse:collapse; font-size:15px; }
+  th, td { text-align:left; padding:8px 6px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th { color:var(--muted); font-size:13px; text-transform:uppercase; letter-spacing:.04em; }
+  .muted { color:var(--muted); font-size:14px; }
+  a { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="mark" aria-hidden="true">+</div>
+    <h1>My Health Pal</h1>
+    <p class="lede">Connect to the health systems where you get care and see your records together on your phone.</p>
+    <nav aria-label="Sections">
+      <a href="#about">About</a>
+      <a href="#how">How it works</a>
+      <a href="#data">Data accessed</a>
+      <a href="#privacy">Privacy policy</a>
+      <a href="#terms">Terms of use</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section id="about">
+    <h2>About the app</h2>
+    <p>My Health Pal is a patient-facing mobile app for iPhone and Android. It lets a person connect each
+      hospital, health system or practice that holds their records, then shows those records in one place:</p>
+    <ul>
+      <li><strong>Labs and test results</strong>, combined across health systems into one history per test, with each result's reference range and any flag the reporting lab included.</li>
+      <li><strong>Health summary</strong>: conditions on the problem list, medications, and allergies.</li>
+      <li><strong>Visits and procedures</strong> as one timeline.</li>
+      <li><strong>Exports</strong> of the combined records (PDF, JSON, CSV) that the person can save or share themselves.</li>
+    </ul>
+    <p>Every record is labeled with the health system it came from.</p>
+    <div class="note"><strong>No medical advice.</strong> The app only connects to existing services and displays what they return.
+      It does not interpret results, diagnose, or recommend treatment. Questions about your health or your records should go to
+      your care team.</div>
+  </section>
+
+  <section id="how">
+    <h2>How it works</h2>
+    <ol>
+      <li>You search for a health system in the app and choose it.</li>
+      <li>The app opens that health system's own sign-in page. You sign in with your usual patient-portal login
+        (for example, MyChart) and approve read-only access. <strong>The app never sees or stores your password.</strong></li>
+      <li>The health system gives the app a temporary access token, using the industry-standard SMART on FHIR protocol
+        (OAuth 2.0 with PKCE). The app uses it to read your records through the health system's patient-access API.</li>
+      <li>You can repeat this for each health system, and disconnect any of them at any time.</li>
+    </ol>
+    <p>Access is read-only. The app cannot change your records or act in your patient portal. Access tokens expire after
+      a short time; to update your records later, you sign in again.</p>
+    <p class="muted">This website also hosts the short page the app returns to after sign-in. It passes the sign-in result back to
+      the app on your phone and stores nothing.</p>
+  </section>
+
+  <section id="data">
+    <h2>Data the app accesses</h2>
+    <p>Only data about the signed-in patient, and only these types:</p>
+    <table>
+      <thead><tr><th>Record type</th><th>Used for</th></tr></thead>
+      <tbody>
+        <tr><td>Patient (name, date of birth)</td><td>Showing whose record is connected</td></tr>
+        <tr><td>Lab results (Observation)</td><td>Labs dashboard, trends, exports</td></tr>
+        <tr><td>Problem list (Condition)</td><td>Health summary</td></tr>
+        <tr><td>Medications (MedicationRequest, Medication)</td><td>Health summary</td></tr>
+        <tr><td>Allergies (AllergyIntolerance)</td><td>Health summary</td></tr>
+        <tr><td>Visits (Encounter)</td><td>Visits timeline</td></tr>
+        <tr><td>Procedures (Procedure)</td><td>Visits timeline</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="privacy">
+    <h2>Privacy policy</h2>
+    <p class="muted">Effective November 5, 2026</p>
+    <h3>Where your data is stored</h3>
+    <p>Your records are stored <strong>only on your phone</strong>, in the app's private storage. Sign-in tokens are kept in your
+      phone's secure keychain (iPhone) or keystore (Android). The app has no servers of its own and does not upload your
+      records anywhere.</p>
+    <h3>Who your data is shared with</h3>
+    <p>No one. The app communicates only with the health systems you choose to connect. It contains no advertising,
+      no analytics or tracking, and does not sell, rent or share your information. Your data is never used for any purpose
+      other than showing it to you.</p>
+    <h3>Exports</h3>
+    <p>If you export your records, the file goes wherever you choose in your phone's share sheet (for example, your files,
+      email, or another app). What happens to it after that is up to you and that destination.</p>
+    <h3>Your control</h3>
+    <ul>
+      <li><strong>Disconnect a health system</strong> in the app's "Health systems" tab. The app revokes its access where
+        the health system supports it and deletes that system's records from your phone.</li>
+      <li><strong>Delete everything</strong> with "Disconnect all and delete data," or by uninstalling the app.</li>
+      <li>You can also revoke the app's access from your health system's patient portal.</li>
+    </ul>
+    <h3>Children</h3>
+    <p>The app is intended for adults managing their own records.</p>
+    <h3>Changes</h3>
+    <p>If this policy changes, the updated version will be posted on this page with a new effective date.</p>
+  </section>
+
+  <section id="terms">
+    <h2>Terms of use</h2>
+    <ul>
+      <li>The app displays information provided by your health systems as they provide it. It may be incomplete, delayed,
+        or contain errors from the source. Your health systems remain the official source of your records.</li>
+      <li>The app is not a medical device and does not provide medical advice, diagnosis, or treatment. In an emergency,
+        call 911.</li>
+      <li>Connect only records you are authorized to access, such as your own.</li>
+      <li>The app is provided as is, without warranties of any kind.</li>
+    </ul>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>Questions, problems, or privacy requests: open an issue at
+      <a href="https://github.com/flukequips/healthconnect-auth/issues">github.com/flukequips/healthconnect-auth/issues</a>.</p>
+  </section>
+</div>
+</body>
+</html>
