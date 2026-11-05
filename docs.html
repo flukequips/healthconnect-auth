@@ -4,9 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>My Health Pal — Documentation</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="logo.png">
 <meta name="description" content="My Health Pal connects to your health systems and shows your records together on your phone.">
 <style>
-  :root { --bg:#F4F6F5; --card:#FFFFFF; --text:#14201C; --muted:#5D6B66; --border:#DDE3E0; --accent:#0F766E; --soft:#D7EFEC; }
+  :root { --bg:#F4F6F5; --card:#FFFFFF; --text:#14201C; --muted:#5D6B66; --border:#DDE3E0; --accent:#0B5C6B; --soft:#D7EFEC; }
   @media (prefers-color-scheme: dark) {
     :root { --bg:#0E1412; --card:#18211E; --text:#E8EEEB; --muted:#98A6A0; --border:#2A3531; --accent:#3CC2B3; --soft:#163B37; }
   }
@@ -14,7 +16,8 @@
   body { margin:0; background:var(--bg); color:var(--text); font:16px/1.6 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
   .wrap { max-width: 760px; margin: 0 auto; padding: 32px 16px 64px; }
   header { margin-bottom: 24px; }
-  .mark { width:48px; height:48px; border-radius:14px; background:var(--soft); color:var(--accent); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:26px; margin-bottom:12px; }
+  .mark { width:64px; height:64px; margin-bottom:12px; }
+  .mark svg { display:block; }
   h1 { font-size: 32px; line-height:1.2; margin:0 0 6px; }
   .lede { color:var(--muted); margin:0; }
   nav { display:flex; flex-wrap:wrap; gap:8px; margin:20px 0 8px; }
@@ -35,9 +38,18 @@
 <body>
 <div class="wrap">
   <header>
-    <div class="mark" aria-hidden="true">+</div>
+    <div class="mark"><svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" role="img" aria-label="My Health Pal logo" viewBox="0 0 512 512"><rect width="512" height="512" rx="112" fill="#0B5C6B"/><g transform="translate(0 0) scale(1)">
+<path d="M112 168 C 180 168 206 228 250 232" fill="none" stroke="#7FE0C2" stroke-width="16" stroke-linecap="round"/>
+<path d="M112 256 L 250 256" fill="none" stroke="#FFFFFF" stroke-width="16" stroke-linecap="round"/>
+<path d="M112 344 C 180 344 206 284 250 280" fill="none" stroke="#F2B544" stroke-width="16" stroke-linecap="round"/>
+<circle cx="112" cy="168" r="22" fill="#7FE0C2"/>
+<circle cx="112" cy="256" r="22" fill="#FFFFFF"/>
+<circle cx="112" cy="344" r="22" fill="#F2B544"/>
+<rect x="308" y="152" width="80" height="208" rx="22" fill="#FFFFFF"/>
+<rect x="244" y="216" width="208" height="80" rx="22" fill="#FFFFFF"/>
+<polyline points="268,256 300,256 316,226 336,288 354,240 366,256 428,256" fill="none" stroke="#E2453A" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/></g></svg></div>
     <h1>My Health Pal</h1>
-    <p class="lede">Connect to the health systems where you get care and see your records together on your phone.</p>
+    <p class="lede">All your health data, one dashboard. Connect the health systems where you get care and see your records together on your phone.</p>
     <nav aria-label="Sections">
       <a href="#about">About</a>
       <a href="#how">How it works</a>
@@ -57,8 +69,12 @@
       <li><strong>Health summary</strong>: conditions on the problem list, medications, and allergies.</li>
       <li><strong>Visits and procedures</strong> as one timeline.</li>
       <li><strong>Exports</strong> of the combined records (PDF, JSON, CSV) that the person can save or share themselves.</li>
+      <li><strong>Access history</strong>: a complete log of every time the app connected to, retrieved records from, or disconnected a health system, and every export.</li>
     </ul>
     <p>Every record is labeled with the health system it came from.</p>
+    <p>On first install, the app shows sample data from two synthetic health networks ("Riverside Health (demo)" and
+      "Lakeview Medical Group (demo)") with records for a fictional patient, so people can try every feature before
+      connecting real accounts. The sample data is labeled on every screen and can be removed at any time.</p>
     <div class="note"><strong>No medical advice.</strong> The app only connects to existing services and displays what they return.
       It does not interpret results, diagnose, or recommend treatment. Questions about your health or your records should go to
       your care team.</div>
@@ -104,6 +120,9 @@
     <p>Your records are stored <strong>only on your phone</strong>, in the app's private storage. Sign-in tokens are kept in your
       phone's secure keychain (iPhone) or keystore (Android). The app has no servers of its own and does not upload your
       records anywhere.</p>
+    <h3>How long your data is kept</h3>
+    <p>Your records stay on your phone until you disconnect that health system, use "Disconnect all and delete data,"
+      or uninstall the app. Nothing is deleted automatically, and nothing is kept anywhere else.</p>
     <h3>Who your data is shared with</h3>
     <p>No one. The app communicates only with the health systems you choose to connect. It contains no advertising,
       no analytics or tracking, and does not sell, rent or share your information. Your data is never used for any purpose
@@ -113,6 +132,8 @@
       email, or another app). What happens to it after that is up to you and that destination.</p>
     <h3>Your control</h3>
     <ul>
+      <li><strong>Get a complete copy</strong> of everything the app holds about you at any time: "Health systems" tab → Export (PDF, JSON or CSV).</li>
+      <li><strong>See who accessed your data</strong>: the "Access history" section of the "Health systems" tab lists every time the app retrieved your records (date and time, health system, record types) and every export. The same log is included in the PDF and JSON exports. No one other than you, including the app's developer, can access your records.</li>
       <li><strong>Disconnect a health system</strong> in the app's "Health systems" tab. The app revokes its access where
         the health system supports it and deletes that system's records from your phone.</li>
       <li><strong>Delete everything</strong> with "Disconnect all and delete data," or by uninstalling the app.</li>
@@ -138,8 +159,9 @@
 
   <section id="contact">
     <h2>Contact</h2>
-    <p>Questions, problems, or privacy requests: open an issue at
-      <a href="https://github.com/flukequips/healthconnect-auth/issues">github.com/flukequips/healthconnect-auth/issues</a>.</p>
+    <p>Questions or privacy requests: <a href="mailto:flukequips@gmail.com">flukequips@gmail.com</a>.
+      Because the app keeps no data on any server, the developer cannot see, change or delete your records; you control
+      them entirely in the app.</p>
   </section>
 </div>
 </body>
