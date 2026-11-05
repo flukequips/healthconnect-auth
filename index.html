@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Returning to Health Connect</title>
+<style>
+  body { font-family: -apple-system, Roboto, Helvetica, Arial, sans-serif; background: #F4F6F5; color: #14201C;
+         margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; box-sizing: border-box; }
+  .box { max-width: 380px; text-align: center; }
+  a { display: inline-block; margin-top: 16px; background: #0F766E; color: #fff; padding: 14px 22px;
+      border-radius: 12px; text-decoration: none; font-weight: 700; }
+  p { color: #5D6B66; line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="box">
+  <h1 id="title">Returning to Health Connect…</h1>
+  <p id="msg">If the app doesn't open on its own, tap the button below.</p>
+  <a id="go" href="#" hidden>Open Health Connect</a>
+</div>
+<script>
+  // HealthEx only accepts https return addresses, so sign-in lands here and
+  // this page hands the result straight back to the app. It forwards only to
+  // the app's own addresses (exp://, exps://, healthconnect://), never to a website.
+  (function () {
+    var params = new URLSearchParams(window.location.search);
+    var state = params.get("state") || "";
+    var dot = state.indexOf(".");
+    var target = "";
+    try { target = dot >= 0 ? decodeURIComponent(state.slice(dot + 1)) : ""; } catch (e) { target = ""; }
+    if (!/^(exp|exps|healthconnect):\/\//i.test(target)) target = "healthconnect://oauth";
+
+    var keep = new URLSearchParams();
+    ["code", "state", "error", "error_description", "iss"].forEach(function (k) {
+      if (params.has(k)) keep.set(k, params.get(k));
+    });
+    var dest = target + (target.indexOf("?") >= 0 ? "&" : "?") + keep.toString();
+
+    // Remove the code from this page's address and history right away.
+    try { history.replaceState(null, "", window.location.pathname); } catch (e) {}
+
+    var link = document.getElementById("go");
+    link.href = dest;
+    link.hidden = false;
+    if (!params.has("code") && !params.has("error")) {
+      document.getElementById("title").textContent = "Health Connect sign-in";
+      document.getElementById("msg").textContent = "This page is only used during sign-in. You can close it.";
+      link.hidden = true;
+      return;
+    }
+    window.location.replace(dest);
+  })();
+</script>
+</body>
+</html>
